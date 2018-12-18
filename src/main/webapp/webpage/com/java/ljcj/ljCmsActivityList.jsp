@@ -49,8 +49,8 @@
         $.dialog({
             content: "url:ljCmsActivityController.do?addorupdate",
             lock : true,
-            width:"650px",
-            height:"400px",
+            width:"1000px",
+            height:"800px",
             title:"新增活动",
             opacity : 0.3,
             cache:false,

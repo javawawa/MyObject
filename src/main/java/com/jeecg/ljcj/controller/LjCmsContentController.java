@@ -299,7 +299,7 @@ public class LjCmsContentController extends BaseController {
 			DiskFileItem fi = (DiskFileItem) cf.getFileItem();
 			File files = fi.getStoreLocation();
 			int recode = QiNiuUtil.uploadFile(files,filename);
-			String value = "http://phsvdmodd.bkt.clouddn.com/" + filename;
+			String value = "http://static.unicoin.top/" + filename;
 			String[] values = { value };
 			int errcode = 0;
 			imgInfo.setUrl(values);

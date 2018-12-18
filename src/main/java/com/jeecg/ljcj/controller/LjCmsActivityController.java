@@ -5,6 +5,7 @@ import com.jeecg.ljcj.entity.LjCmsActivityEntity;
 import com.jeecg.ljcj.entity.LjCmsAdvertEntity;
 import com.jeecg.ljcj.entity.LjCmsContentEntity;
 import com.jeecg.ljcj.service.LjCmsActivityServiceI;
+import com.jeecg.ljcj.utils.QiNiuUtil;
 import com.jeecg.ljcj.utils.jpushUtils.HttpUtil;
 import com.jeecg.ljcj.utils.jpushUtils.JpushRequestEntity;
 import org.apache.log4j.Logger;
@@ -15,6 +16,7 @@ import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
 import org.jeecgframework.core.common.model.json.AjaxJson;
 import org.jeecgframework.core.common.model.json.DataGrid;
 import org.jeecgframework.core.constant.Globals;
+import org.jeecgframework.core.util.DateUtils;
 import org.jeecgframework.core.util.MyBeanUtils;
 import org.jeecgframework.core.util.ResourceUtil;
 import org.jeecgframework.core.util.StringUtil;
@@ -29,6 +31,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import sun.misc.BASE64Decoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -195,6 +198,37 @@ public class LjCmsActivityController extends BaseController {
 		return j;
 	}
 
+	/**
+	 * 上传图片
+	 * @param shareurl
+	 * @return
+	 */
+	@RequestMapping(params = "uploadImage")
+	@ResponseBody
+	public AjaxJson uploadImage(String shareurl) {
+		AjaxJson ajaxJson = new AjaxJson();
+		ajaxJson.setSuccess(true);
+		ajaxJson.setMsg("活动图片上传成功!");
+		Map<String, Object> ajaxMap = new HashMap<String, Object>();
+		try {
+			String message = null;
+			shareurl = shareurl.split(",")[1].toString();
+			byte[] buffer = new BASE64Decoder().decodeBuffer(shareurl);
+			String filename = "image/activityImg/Img"+DateUtils.getDataString(DateUtils.yyyymmddhhmmss) + StringUtil.random(4)+".png";
+			int recode = QiNiuUtil.uploadFileByByte(buffer,filename);
+			if(recode != 200 ){
+				throw new BusinessException("活动图片上传失败!"+recode);
+			}
+			String lastFilename = "/"+filename;
+			ajaxJson.setObj(lastFilename);
+		} catch (Exception e) {
+			systemService.addLog(e.getMessage(), Globals.Log_Type_UPLOAD, Globals.Log_Leavel_ERROR);
+			e.printStackTrace();
+			ajaxJson.setSuccess(false);
+			ajaxJson.setMsg(e.getMessage());
+		}
+		return ajaxJson;
+	}
 
 	/**
 	 * 活动管理表列表页面跳转

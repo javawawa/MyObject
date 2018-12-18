@@ -197,7 +197,7 @@
 						<%--</label>--%>
 					<%--</td>--%>
 					<%--<td class="value">--%>
-							   <input id="createAt" name="createAt" type="text" style="width: 150px" class="Wdate" onClick="WdatePicker()"  datatype="*"  ignore="checked" />
+							   <%--<input id="createAt" name="createAt" type="text" style="width: 150px" class="Wdate" onClick="WdatePicker()"  datatype="*"  ignore="checked" />--%>
 							<%--<span class="Validform_checktip"></span>--%>
 							<%--<label class="Validform_label" style="display: none;">createAt</label>--%>
 						<%--</td>--%>
